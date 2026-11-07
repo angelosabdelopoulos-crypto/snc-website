@@ -19,12 +19,35 @@ function ProductVisual({ product }: { product: Product }) {
 }
 
 export default function App() {
-  const [cart, setCart] = useState<CartLine[]>([]);
+  const [cart, setCart] = useState<CartLine[]>(() => {
+    try {
+      const saved = window.localStorage.getItem("snc-preview-bag-v1");
+      if (!saved) return [];
+      const parsed: unknown = JSON.parse(saved);
+      if (!Array.isArray(parsed)) return [];
+      return parsed.flatMap((entry): CartLine[] => {
+        if (!entry || typeof entry !== "object") return [];
+        const item = entry as { productId?: unknown; quantity?: unknown; size?: unknown; color?: unknown };
+        const product = products.find((candidate) => candidate.id === item.productId);
+        if (!product || !Number.isInteger(item.quantity) || (item.quantity as number) < 1 ||
+            typeof item.size !== "string" || typeof item.color !== "string") return [];
+        return [{
+          key: `${product.id}::${item.size}::${item.color}`,
+          product,
+          quantity: item.quantity as number,
+          size: item.size,
+          color: item.color,
+        }];
+      });
+    } catch {
+      return [];
+    }
+  });
   const [cartOpen, setCartOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [notice, setNotice] = useState("");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);\n  const bagButtonRef = useRef<HTMLButtonElement>(null);
   const total = useMemo(
     () => cart.reduce((sum, line) => sum + line.quantity, 0),
     [cart],
