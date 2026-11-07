@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Minus, Plus, X } from "lucide-react";
 import type { Product } from "../data/products";
 
@@ -18,12 +19,56 @@ type Props = {
 };
 
 export default function CartDrawer({ open, items, onClose, onIncrease, onDecrease }: Props) {
+  const dialogRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const previouslyFocused = document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+    const dialog = dialogRef.current;
+    const focusable = () => dialog?.querySelectorAll<HTMLElement>(
+      'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    );
+    focusable()?.[0]?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onClose();
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const elements = focusable();
+      if (!elements?.length) {
+        event.preventDefault();
+        dialog?.focus();
+        return;
+      }
+      const first = elements[0];
+      const last = elements[elements.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      previouslyFocused?.focus();
+    };
+  }, [open, onClose]);
+
   if (!open) return null;
   return (
     <div className="drawer-backdrop" role="presentation" onMouseDown={(event) => {
       if (event.target === event.currentTarget) onClose();
     }}>
-      <aside className="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="bag-title">
+      <aside ref={dialogRef} className="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="bag-title" tabIndex={-1}>
         <div className="drawer-head">
           <div><p className="eyebrow">SNC / YOUR SELECTION</p><h2 id="bag-title">THE BAG <span>({items.reduce((sum, item) => sum + item.quantity, 0).toString().padStart(2, "0")})</span></h2></div>
           <button type="button" onClick={onClose} aria-label="Close bag"><X /></button>
