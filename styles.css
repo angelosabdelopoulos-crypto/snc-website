@@ -92,3 +92,35 @@ button:focus-visible,a:focus-visible{outline:2px solid currentColor;outline-offs
 .payment-pending{border:1px solid #1112;padding:13px 14px;margin:14px 0 18px;display:grid;grid-template-columns:1fr auto;gap:7px 12px;font:8px 'DM Mono',monospace;letter-spacing:.08em;color:#777}
 .payment-pending strong{color:#8b6c5c;font-weight:500}
 .payment-pending small{grid-column:1/-1;color:#999;font-size:8px;letter-spacing:.04em}
+
+
+/* SNC identity, product media and detail layout */
+.brand-logo{display:flex;flex-direction:column;align-items:flex-start;line-height:.8;gap:7px}
+.brand-logo-type{font-size:clamp(28px,3vw,36px);font-weight:800;letter-spacing:-.11em;color:currentColor}
+.brand-logo-caption{font:6px 'DM Mono',monospace;letter-spacing:.16em;color:#888;white-space:nowrap}
+.product-visual-photo img{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;padding:8%;transition:transform .65s cubic-bezier(.2,.7,.2,1)}
+.product-card-open:hover .product-visual-photo img{transform:scale(1.045)}
+.product-gallery-main{isolation:isolate}
+.product-detail-image{position:relative;z-index:1;width:100%;height:100%;max-height:760px;object-fit:contain;padding:8%}
+.gallery-index{position:absolute;z-index:2;left:18px;bottom:16px;font:8px 'DM Mono',monospace;letter-spacing:.13em;color:#555}
+.product-detail-copy{padding-top:10px}
+.product-detail-copy h1{font-size:clamp(34px,4vw,58px);line-height:.96;letter-spacing:-.075em;margin:20px 0}
+.product-detail-description{max-width:390px;color:#666;font-size:13px;line-height:1.85;margin:25px 0}
+.product-detail-price{font:10px 'DM Mono',monospace;letter-spacing:.12em;border-top:1px solid #1112;border-bottom:1px solid #1112;padding:16px 0;margin:25px 0}
+.option-group{margin:25px 0}
+.option-label{display:block;font:9px 'DM Mono',monospace;letter-spacing:.12em;color:#777;margin-bottom:12px}
+.option-list{display:flex;flex-wrap:wrap;gap:8px}
+.option-chip{border:1px solid #1113;background:transparent;color:#111;padding:10px 13px;font:9px 'DM Mono',monospace;letter-spacing:.06em}
+.option-chip.selected{background:#111;color:#fff;border-color:#111}
+.product-add-button{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;background:#111;color:#fff;border:1px solid #111;padding:17px;font:9px 'DM Mono',monospace;letter-spacing:.13em;margin-top:32px}
+.product-disclaimer{font:8px 'DM Mono',monospace;letter-spacing:.09em;line-height:1.7;color:#888;margin-top:18px}
+.bag-item-info{flex:1}
+.bag-item>span{font:8px 'DM Mono',monospace;color:#777;white-space:nowrap}
+.drawer-head h2 span{font:10px 'DM Mono',monospace;color:#777}
+@media(max-width:760px){
+  .product-detail-grid{grid-template-columns:1fr;gap:35px}
+  .product-gallery-main{height:110vw;min-height:340px;max-height:520px}
+  .product-detail-copy{padding-top:0}
+  .product-page{padding-top:35px;padding-bottom:75px}
+  .product-page-top{margin-bottom:28px;gap:12px;font-size:7px}
+}
