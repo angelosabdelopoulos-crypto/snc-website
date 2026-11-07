@@ -47,7 +47,8 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [notice, setNotice] = useState("");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const menuButtonRef = useRef<HTMLButtonElement>(null);\n  const bagButtonRef = useRef<HTMLButtonElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const bagButtonRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     try {
       const compact = cart.map(({ product, quantity, size, color }) => ({
