@@ -142,6 +142,7 @@ export default function App() {
         </nav>
         <div className="header-actions">
           <button
+            ref={bagButtonRef}
             className="bag-button"
             onClick={() => setCartOpen(true)}
             aria-label={`Open shopping bag, ${total} items`}
