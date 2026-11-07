@@ -48,6 +48,17 @@ export default function App() {
   const [notice, setNotice] = useState("");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);\n  const bagButtonRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    try {
+      const compact = cart.map(({ product, quantity, size, color }) => ({
+        productId: product.id, quantity, size, color,
+      }));
+      window.localStorage.setItem("snc-preview-bag-v1", JSON.stringify(compact));
+    } catch {
+      // Storage can be unavailable in private browsing; the in-memory bag still works.
+    }
+  }, [cart]);
+
   const total = useMemo(
     () => cart.reduce((sum, line) => sum + line.quantity, 0),
     [cart],
